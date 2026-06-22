@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Envelope Soul Café</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* ========================================
+                   PALETA DE COLORES
+           ======================================== */
+        :root {
+            --morado: #7A1FA1;
+            --morado-oscuro: #5a1678;
+            --guinda: #670A2B;
+            --guinda-claro: #8a0f3a;
+            --blanco: #FEFEFF;
+            --crema: #f5f0eb;
+            --texto-oscuro: #2d1a1a;
+            --sombra: rgba(122, 31, 161, 0.2);
+        }
+
+        body {
+            background: var(--crema);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--texto-oscuro);
+        }
+
+        /* ========================================
+                   NAVBAR CON LOGO
+           ======================================== */
+        .navbar-custom {
+            background: linear-gradient(135deg, var(--morado) 0%, var(--guinda) 100%);
+            padding: 10px 0;
+            box-shadow: 0 4px 25px var(--sombra);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .navbar-custom .navbar-brand {
+            color: var(--blanco) !important;
+            font-weight: 800;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .navbar-custom .navbar-brand:hover {
+            transform: scale(1.02);
+        }
+
+        .navbar-custom .navbar-brand .logo-img {
+            height: 45px;
+            width: auto;
+            border-radius: 10px;
+            object-fit: contain;
+        }
+
+        .navbar-custom .navbar-brand span {
+            color: #d4a0e0;
+        }
+
+        .navbar-custom .navbar-brand .soul {
+            color: #e8c9f0;
+            font-style: italic;
+        }
+
+        .btn-volver {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: var(--blanco);
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-volver:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05);
+            color: var(--blanco);
+        }
+
+        /* ========================================
+                   CARDS
+           ======================================== */
+        .card-checkout {
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            background: var(--blanco);
+            box-shadow: 0 4px 15px rgba(122, 31, 161, 0.08);
+            padding: 30px;
+            height: 100%;
+        }
+
+        .titulo-pagina {
+            color: var(--morado);
+            font-weight: 800;
+        }
+
+        .titulo-pagina i {
+            color: var(--guinda);
+            margin-right: 12px;
+        }
+
+        /* ========================================
+                   FORMULARIO
+           ======================================== */
+        .form-label {
+            font-weight: 600;
+            color: var(--texto-oscuro);
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            border: 2px solid #e8e0d8;
+            border-radius: 12px;
+            padding: 12px 16px;
+            transition: all 0.3s;
+            background: #faf8f6;
+        }
+
+        .form-control:focus {
+            border-color: var(--morado);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(122, 31, 161, 0.1);
+        }
+
+        .form-control.is-valid {
+            border-color: #28a745;
+        }
+
+        .form-control.is-invalid {
+            border-color: #dc3545;
+        }
+
+        .form-control:disabled {
+            background: #e9ecef;
+            opacity: 0.8;
+            cursor: not-allowed;
+        }
+
+        .badge-cliente {
+            background: var(--morado);
+            color: var(--blanco);
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* ========================================
+                   RESUMEN DEL PEDIDO
+           ======================================== */
+        .resumen-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0e8e0;
+        }
+
+        .resumen-item:last-child {
+            border-bottom: none;
+        }
+
+        .resumen-item .nombre {
+            font-weight: 600;
+        }
+
+        .resumen-item .precio {
+            font-weight: 700;
+            color: var(--morado);
+        }
+
+        .resumen-total {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--morado);
+        }
+
+        .resumen-total .simbolo {
+            color: var(--guinda);
+        }
+
+        .badge-chico {
+            background: #28a745;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-grande {
+            background: #007bff;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-unico {
+            background: var(--morado);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* ========================================
+                   BOTÓN CONFIRMAR
+           ======================================== */
+        .btn-confirmar {
+            background: linear-gradient(135deg, var(--morado), var(--guinda));
+            color: var(--blanco);
+            border: none;
+            border-radius: 50px;
+            padding: 14px 40px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn-confirmar:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 30px rgba(122, 31, 161, 0.3);
+            color: var(--blanco);
+        }
+
+        .btn-confirmar:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-confirmar i {
+            margin-right: 10px;
+        }
+
+        /* ========================================
+                   MODAL REGISTRO
+           ======================================== */
+        .modal-content {
+            border-radius: 20px;
+            border: none;
+            box-shadow: 0 8px 40px var(--sombra);
+        }
+
+        .modal-header {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .modal-footer {
+            border-top: none;
+        }
+
+        .btn-registro-modal {
+            background: linear-gradient(135deg, var(--morado), var(--guinda));
+            color: var(--blanco);
+            border: none;
+            border-radius: 50px;
+            padding: 10px 30px;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        .btn-registro-modal:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 30px var(--sombra);
+            color: var(--blanco);
+        }
+
+        .btn-sin-registro {
+            background: transparent;
+            color: var(--morado);
+            border: 2px solid var(--morado);
+            border-radius: 50px;
+            padding: 10px 30px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-sin-registro:hover {
+            background: var(--morado);
+            color: var(--blanco);
+        }
+
+        /* ========================================
+                   RESPONSIVE
+           ======================================== */
+        @media (max-width: 768px) {
+            .card-checkout {
+                padding: 20px;
+            }
+            .resumen-total {
+                font-size: 1.2rem;
+            }
+            .btn-confirmar {
+                font-size: 1rem;
+                padding: 12px 24px;
+            }
+            .navbar-custom .navbar-brand .logo-img {
+                height: 35px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navbar-custom .navbar-brand {
+                font-size: 1.1rem;
+            }
+            .navbar-custom .navbar-brand .logo-img {
+                height: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================
+    NAVBAR
+    ========================================== -->
+    <nav class="navbar navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="tienda.html">
+                <img src="/img/borde.png" alt="Envelope Soul Café" class="logo-img" onerror="this.style.display='none'">
+                Envelope <span class="soul">Soul</span> <span>Café</span>
+            </a>
+            <a href="carrito-cliente.html" class="btn-volver">
+                <i class="fas fa-arrow-left"></i> Volver al carrito
+            </a>
+        </div>
+    </nav>
+
+    <!-- ==========================================
+    CONTENIDO
+    ========================================== -->
+    <div class="container py-5">
+        <div class="row g-4">
+
+            <!-- COLUMNA IZQUIERDA: FORMULARIO -->
+            <div class="col-lg-7">
+                <div class="card-checkout">
+                    <h2 class="titulo-pagina">
+                        <i class="fas fa-user"></i> Datos del Cliente
+                    </h2>
+
+                    <!-- Badge de sesión -->
+                    <div id="badge-sesion" class="mb-3">
+                        <!-- Se llena con JavaScript -->
+                    </div>
+
+                    <form id="form-checkout" novalidate>
+                        <!-- Nombre -->
+                        <div class="mb-3">
+                            <label class="form-label" for="nombre">
+                                <i class="fas fa-user me-1"></i> Nombre completo
+                            </label>
+                            <input type="text" class="form-control" id="nombre" placeholder="Ej: Juan Pérez" required>
+                            <div class="invalid-feedback">Por favor ingresa tu nombre completo.</div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label class="form-label" for="email">
+                                <i class="fas fa-envelope me-1"></i> Correo electrónico
+                            </label>
+                            <input type="email" class="form-control" id="email" placeholder="ejemplo@correo.com" required>
+                            <div class="invalid-feedback">Ingresa un correo electrónico válido.</div>
+                        </div>
+
+                        <!-- Teléfono -->
+                        <div class="mb-3">
+                            <label class="form-label" for="telefono">
+                                <i class="fas fa-phone me-1"></i> Teléfono
+                            </label>
+                            <input type="tel" class="form-control" id="telefono" placeholder="55 1234 5678" required>
+                            <div class="invalid-feedback">Ingresa un número de teléfono válido.</div>
+                        </div>
+
+                        <!-- Dirección -->
+                        <div class="mb-3">
+                            <label class="form-label" for="direccion">
+                                <i class="fas fa-map-marker-alt me-1"></i> Dirección
+                            </label>
+                            <input type="text" class="form-control" id="direccion" placeholder="Calle, número, colonia, ciudad" required>
+                            <div class="invalid-feedback">Ingresa tu dirección completa.</div>
+                        </div>
+
+                        <!-- Método de pago -->
+                        <div class="mb-4">
+                            <label class="form-label">
+                                <i class="fas fa-credit-card me-1"></i> Método de pago
+                            </label>
+                            <select class="form-control" id="metodo-pago">
+                                <option value="Efectivo">Efectivo</option>
+                                <option value="Tarjeta">Tarjeta</option>
+                                <option value="Transferencia">Transferencia</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn-confirmar" id="btn-confirmar">
+                            <i class="fas fa-check-circle"></i> Confirmar pedido
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- COLUMNA DERECHA: RESUMEN DEL PEDIDO -->
+            <div class="col-lg-5">
+                <div class="card-checkout">
+                    <h2 class="titulo-pagina" style="font-size: 1.3rem;">
+                        <i class="fas fa-receipt"></i> Resumen del pedido
+                    </h2>
+
+                    <div id="resumen-productos">
+                        <!-- Los productos se cargan aquí con JavaScript -->
+                    </div>
+
+                    <hr>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="fw-bold">Total:</span>
+                        <span class="resumen-total">
+                            <span class="simbolo">$</span>
+                            <span id="total-checkout">0.00</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ==========================================
+    MODAL: ¿QUIERES REGISTRARTE?
+    ========================================== -->
+    <div class="modal fade" id="modalRegistro" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content p-4">
+                <div class="modal-header text-center d-block">
+                    <i class="fas fa-user-plus" style="font-size: 3rem; color: var(--morado);"></i>
+                    <h4 class="fw-bold mt-2" style="color: var(--texto-oscuro);">¡Pedido Confirmado!</h4>
+                </div>
+                <div class="modal-body text-center">
+                    <p style="color: #6c5a4a; font-size: 1.05rem;">
+                        ¿Quieres crear una cuenta para <strong>guardar tus datos</strong> y <strong>ver el historial</strong> de tus pedidos?
+                    </p>
+                    <p class="text-muted small">Es rápido y gratuito.</p>
+                </div>
+                <div class="modal-footer justify-content-center gap-3">
+                    <button class="btn-sin-registro" onclick="continuarSinRegistro()">
+                        <i class="fas fa-times me-1"></i> No, gracias
+                    </button>
+                    <button class="btn-registro-modal" onclick="irARegistro()">
+                        <i class="fas fa-user-plus me-1"></i> Sí, registrarme
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // ==========================================
+        // VARIABLES GLOBALES
+        // ==========================================
+        let pedidoCompletado = false;
+        let datosCliente = {};
+        let ultimoPedido = null;
+
+        // ==========================================
+        // CARGAR DATOS DEL CLIENTE LOGUEADO
+        // ==========================================
+        function cargarDatosCliente() {
+            const sesion = JSON.parse(localStorage.getItem('cliente_sesion'));
+            const badge = document.getElementById('badge-sesion');
+
+            if (sesion) {
+                document.getElementById('nombre').value = sesion.nombre || '';
+                document.getElementById('email').value = sesion.email || '';
+                document.getElementById('telefono').value = sesion.telefono || '';
+                document.getElementById('direccion').value = sesion.direccion || '';
+
+                document.querySelectorAll('#form-checkout .form-control').forEach(input => {
+                    if (input.id !== 'metodo-pago') {
+                        input.disabled = true;
+                        input.classList.add('is-valid');
+                    }
+                });
+
+                badge.innerHTML = `
+                    <span class="badge-cliente">
+                        <i class="fas fa-check-circle me-1"></i> 
+                        Pedido como <strong>${sesion.nombre}</strong>
+                    </span>
+                    <span class="text-muted ms-2 small">(tus datos se usarán automáticamente)</span>
+                `;
+            } else {
+                badge.innerHTML = `
+                    <span class="text-muted small">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Completa tus datos para finalizar el pedido.
+                    </span>
+                `;
+            }
+        }
+
+        // ==========================================
+        // CARGAR RESUMEN DEL PEDIDO
+        // ==========================================
+        function cargarResumen() {
+            const carrito = JSON.parse(localStorage.getItem('carrito-cliente')) || [];
+            const contenedor = document.getElementById('resumen-productos');
+            const totalSpan = document.getElementById('total-checkout');
+
+            if (carrito.length === 0) {
+                window.location.href = 'tienda.html';
+                return;
+            }
+
+            let html = '';
+            let total = 0;
+
+            carrito.forEach(item => {
+                const subtotal = item.precio * item.cantidad;
+                total += subtotal;
+
+                let badgeClass = 'badge-unico';
+                let badgeText = item.tamaño || 'Único';
+                if (item.tamaño === 'Chico') {
+                    badgeClass = 'badge-chico';
+                } else if (item.tamaño === 'Grande') {
+                    badgeClass = 'badge-grande';
+                }
+
+                html += `
+                    <div class="resumen-item">
+                        <span class="nombre">
+                            ${item.nombre} 
+                            <span class="${badgeClass}">${badgeText}</span>
+                            <span class="text-muted">x${item.cantidad}</span>
+                        </span>
+                        <span class="precio">$${subtotal.toFixed(2)}</span>
+                    </div>
+                `;
+            });
+
+            contenedor.innerHTML = html;
+            totalSpan.textContent = total.toFixed(2);
+        }
+
+        // ==========================================
+        // ENVIAR PEDIDO
+        // ==========================================
+        document.getElementById('form-checkout').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const sesion = JSON.parse(localStorage.getItem('cliente_sesion'));
+            const btn = document.getElementById('btn-confirmar');
+            const nombre = document.getElementById('nombre');
+            const email = document.getElementById('email');
+            const telefono = document.getElementById('telefono');
+            const direccion = document.getElementById('direccion');
+
+            if (!sesion) {
+                let isValid = true;
+                [nombre, email, telefono, direccion].forEach(campo => {
+                    if (!campo.value.trim()) {
+                        campo.classList.add('is-invalid');
+                        isValid = false;
+                    } else {
+                        campo.classList.remove('is-invalid');
+                        campo.classList.add('is-valid');
+                    }
+                });
+
+                if (!isValid) {
+                    alert('Por favor completa todos los campos requeridos.');
+                    return;
+                }
+            }
+
+            const carrito = JSON.parse(localStorage.getItem('carrito-cliente')) || [];
+            const total = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+            const metodoPago = document.getElementById('metodo-pago').value;
+
+            datosCliente = {
+                nombre: sesion ? sesion.nombre : nombre.value.trim(),
+                email: sesion ? sesion.email : email.value.trim(),
+                telefono: sesion ? (sesion.telefono || '') : telefono.value.trim(),
+                direccion: sesion ? (sesion.direccion || '') : direccion.value.trim()
+            };
+
+            const pedido = {
+                cliente: {
+                    id_cliente: sesion ? sesion._id : null,
+                    nombre: datosCliente.nombre,
+                    email: datosCliente.email,
+                    telefono: datosCliente.telefono,
+                    direccion: datosCliente.direccion
+                },
+                productos: carrito,
+                total: total,
+                metodo_pago: metodoPago,
+                estado: 'Pendiente'
+            };
+
+            try {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando...';
+
+                const res = await fetch('/api/pedidos/guardar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(pedido)
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    // GUARDAR EL PEDIDO COMPLETO
+                    ultimoPedido = data.pedido;
+                    localStorage.setItem('ultimo-pedido', JSON.stringify(ultimoPedido));
+                    
+                    // GUARDAR EL PEDIDO PENDIENTE PARA ASOCIAR DESPUÉS
+                    localStorage.setItem('pedido_pendiente', JSON.stringify({
+                        datos: datosCliente,
+                        pedido: ultimoPedido
+                    }));
+
+                    localStorage.removeItem('carrito-cliente');
+                    pedidoCompletado = true;
+
+                    if (!sesion) {
+                        const modal = new bootstrap.Modal(document.getElementById('modalRegistro'));
+                        modal.show();
+                    } else {
+                        // Si está logueado, ir directo a confirmación
+                        window.location.href = 'pedido-confirmado.html';
+                    }
+                } else {
+                    alert('Error al procesar el pedido: ' + data.mensaje);
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-check-circle me-2"></i> Confirmar pedido';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Hubo un error al procesar tu pedido. Intenta nuevamente.');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-check-circle me-2"></i> Confirmar pedido';
+            }
+        });
+
+        // ==========================================
+        // FUNCIONES DEL MODAL
+        // ==========================================
+        function continuarSinRegistro() {
+            window.location.href = 'pedido-confirmado.html';
+        }
+
+        function irARegistro() {
+            // Los datos ya están guardados en localStorage desde el submit
+            window.location.href = 'registro-cliente.html?from=checkout';
+        }
+
+        // ==========================================
+        // VALIDACIÓN EN TIEMPO REAL
+        // ==========================================
+        document.querySelectorAll('#form-checkout .form-control:not([disabled])').forEach(campo => {
+            campo.addEventListener('input', function() {
+                if (this.value.trim()) {
+                    this.classList.remove('is-invalid');
+                    this.classList.add('is-valid');
+                } else {
+                    this.classList.remove('is-valid');
+                }
+            });
+        });
+
+        // ==========================================
+        // INICIALIZAR
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', function() {
+            cargarDatosCliente();
+            cargarResumen();
+
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('registro_exitoso') === 'true') {
+                window.location.href = 'pedido-confirmado.html';
+            }
+        });
+    </script>
+</body>
+</html>

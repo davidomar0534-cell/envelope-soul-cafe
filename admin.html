@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Administrador | Envelope Soul Café</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* ========================================
+                   PALETA DE COLORES
+           ======================================== */
+        :root {
+            --morado: #7A1FA1;
+            --morado-oscuro: #5a1678;
+            --guinda: #670A2B;
+            --guinda-claro: #8a0f3a;
+            --blanco: #FEFEFF;
+            --crema: #f5f0eb;
+            --texto-oscuro: #2d1a1a;
+            --sombra: rgba(122, 31, 161, 0.25);
+        }
+
+        body {
+            background: var(--crema);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--texto-oscuro);
+        }
+
+        /* ========================================
+                   NAVBAR CON LOGO
+           ======================================== */
+        .navbar-custom {
+            background: linear-gradient(135deg, var(--morado) 0%, var(--guinda) 100%);
+            padding: 10px 0;
+            box-shadow: 0 4px 25px var(--sombra);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .navbar-custom .navbar-brand {
+            color: var(--blanco) !important;
+            font-weight: 800;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .navbar-custom .navbar-brand:hover {
+            transform: scale(1.02);
+        }
+
+        .navbar-custom .navbar-brand .logo-img {
+            height: 45px;
+            width: auto;
+            border-radius: 10px;
+            object-fit: contain;
+        }
+
+        .navbar-custom .navbar-brand span {
+            color: #d4a0e0;
+        }
+
+        .navbar-custom .navbar-brand .soul {
+            color: #e8c9f0;
+            font-style: italic;
+        }
+
+        .navbar-custom .nav-link {
+            color: var(--blanco) !important;
+        }
+
+        .seccion-titulo {
+            color: var(--morado);
+            font-weight: bold;
+            border-bottom: 3px solid var(--guinda);
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+
+        .seccion-titulo i {
+            color: var(--guinda);
+            margin-right: 10px;
+        }
+
+        .table thead {
+            background: linear-gradient(135deg, var(--morado), var(--guinda));
+            color: var(--blanco);
+        }
+
+        .table thead th {
+            border: none;
+            padding: 12px 16px;
+            font-weight: 600;
+        }
+
+        .badge-tamano {
+            background-color: #D9944E;
+            color: #fff;
+        }
+
+        .badge-chico {
+            background-color: #28A745;
+            color: #fff;
+        }
+
+        .badge-grande {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        .badge-estado {
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-estado.pendiente {
+            background: #ffc107;
+            color: #000;
+        }
+
+        .badge-estado.confirmado {
+            background: #17a2b8;
+            color: #fff;
+        }
+
+        .badge-estado.preparando {
+            background: #007bff;
+            color: #fff;
+        }
+
+        .badge-estado.listoo {
+            background: #28a745;
+            color: #fff;
+        }
+
+        .badge-estado.entregado {
+            background: #28a745;
+            color: #fff;
+        }
+
+        .badge-estado.devolucion {
+            background: #fd7e14;
+            color: #fff;
+        }
+
+        .badge-estado.cancelado {
+            background: #dc3545;
+            color: #fff;
+        }
+
+        .btn-estado {
+            border: none;
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-estado:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-estado.confirmar {
+            background: #17a2b8;
+            color: #fff;
+        }
+
+        .btn-estado.preparar {
+            background: #007bff;
+            color: #fff;
+        }
+
+        .btn-estado.listoo {
+            background: #28a745;
+            color: #fff;
+        }
+
+        .btn-estado.entregar {
+            background: #20c997;
+            color: #fff;
+        }
+
+        .btn-estado.devolucion {
+            background: #fd7e14;
+            color: #fff;
+        }
+
+        .btn-estado.devolucion:hover {
+            background: #e06b0a;
+            transform: scale(1.05);
+        }
+
+        .btn-estado.cancelar {
+            background: #dc3545;
+            color: #fff;
+        }
+
+        .btn-volver {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: var(--blanco);
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-volver:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05);
+            color: var(--blanco);
+        }
+
+        .btn-danger-custom {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: var(--blanco);
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-danger-custom:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05);
+            color: var(--blanco);
+        }
+
+        .card-pedidos {
+            border: none;
+            border-radius: 20px;
+            background: var(--blanco);
+            box-shadow: 0 4px 15px var(--sombra);
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .badge-origen {
+            font-size: 10px;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .badge-origen.tienda {
+            background: var(--morado);
+            color: #fff;
+        }
+
+        .badge-origen.cajero {
+            background: var(--guinda);
+            color: #fff;
+        }
+
+        .pedido-cliente {
+            font-weight: 600;
+            color: var(--morado);
+        }
+
+        .pedido-email {
+            color: #6c5a4a;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 768px) {
+            .navbar-custom .navbar-brand .logo-img {
+                height: 35px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================
+    NAVBAR CON LOGO
+    ========================================== -->
+    <nav class="navbar navbar-custom shadow mb-4">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="index.html">
+                <img src="/img/borde.png" alt="Envelope Soul Café" class="logo-img" onerror="this.style.display='none'">
+                Envelope <span class="soul">Soul</span> <span>Café</span>
+            </a>
+            <div>
+                <span class="btn-volver me-2" style="cursor: default; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
+                <i class="fas fa-user-shield me-1"></i> Admin</span>
+                <a href="reporte_ventas.html" class="btn btn-warning me-2 fw-bold">📊 Ver Reporte</a>
+                <button class="btn btn-warning me-2 fw-bold" data-bs-toggle="modal" data-bs-target="#modalProducto">➕ Producto</button>
+                <button class="btn btn-warning me-2 fw-bold" data-bs-toggle="modal" data-bs-target="#modalCajero">👤 Cajero</button>
+                <button onclick="cerrarSesion()" class="btn-danger-custom fw-bold">Salir</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mb-5">
+
+        <!-- ==========================================
+        SECCIÓN DE PEDIDOS
+        ========================================== -->
+        <div class="card-pedidos">
+            <h4 class="seccion-titulo" style="margin-top: 0;">
+                <i class="fas fa-clipboard-list"></i> Pedidos en Línea
+            </h4>
+            <div id="tabla-pedidos">
+                <!-- Se llena con JavaScript -->
+            </div>
+        </div>
+
+        <!-- ==========================================
+        PRODUCTOS
+        ========================================== -->
+        <div class="card shadow p-4 bg-white mt-4">
+
+            <!-- BEBIDAS CALIENTES -->
+            <h4 class="seccion-titulo">🥵 Bebidas Calientes</h4>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered text-center align-middle">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Tamaños / Precios</th>
+                            <th>Stock</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-calientes"></tbody>
+                </table>
+            </div>
+
+            <!-- BEBIDAS FRÍAS -->
+            <h4 class="seccion-titulo">🧊 Bebidas Frías</h4>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered text-center align-middle">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Tamaños / Precios</th>
+                            <th>Stock</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-frias"></tbody>
+                </table>
+            </div>
+
+            <!-- SNACKS -->
+            <h4 class="seccion-titulo">🍪 Snacks</h4>
+            <div class="table-responsive">
+                <table class="table table-bordered text-center align-middle">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Tamaños / Precios</th>
+                            <th>Stock</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-snacks"></tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ==========================================
+    MODALES
+    ========================================== -->
+
+    <!-- MODAL EDITAR INFORMACIÓN -->
+    <div class="modal fade" id="modalEditarInfo" tabindex="-1">
+        <div class="modal-dialog"><form id="form-editar-info" class="modal-content p-4">
+            <input type="hidden" id="edit-id-info">
+            <h5 class="mb-3">✏️ Editar Producto</h5>
+            <input type="text" id="edit-nombre" class="form-control mb-2" required placeholder="Nombre del Producto">
+            <select id="edit-tipo" class="form-select mb-3">
+                <option value="Caliente">Caliente</option>
+                <option value="Fría">Fría</option>
+                <option value="Snack">Snack</option>
+            </select>
+            <button type="submit" class="btn btn-warning w-100 fw-bold">Guardar Cambios</button>
+        </form></div>
+    </div>
+
+    <!-- MODAL EDITAR STOCK -->
+    <div class="modal fade" id="modalEditarStock" tabindex="-1">
+        <div class="modal-dialog"><form id="form-editar-stock" class="modal-content p-4">
+            <input type="hidden" id="edit-id-stock">
+            <h5 class="mb-3">📦 Ajustar Inventario</h5>
+            <p class="text-muted small">Selecciona el tamaño que deseas modificar:</p>
+            <select id="edit-tamano" class="form-select mb-3">
+                <option value="Chico">Chico</option>
+                <option value="Grande">Grande</option>
+                <option value="Único">Único</option>
+            </select>
+            <label class="form-label small fw-bold text-muted">Nuevo Precio ($)</label>
+            <input type="number" id="edit-precio" class="form-control mb-2" step="0.01" required>
+            <label class="form-label small fw-bold text-muted">Nueva Cantidad</label>
+            <input type="number" id="edit-cantidad" class="form-control mb-2" required>
+            <button type="submit" class="btn btn-primary w-100 fw-bold mt-2">Actualizar</button>
+        </form></div>
+    </div>
+
+    <!-- MODAL NUEVO PRODUCTO -->
+    <div class="modal fade" id="modalProducto" tabindex="-1">
+        <div class="modal-dialog modal-lg"><form id="form-nuevo-producto" class="modal-content p-4">
+            <h5>➕ Nuevo Producto</h5>
+            <input type="text" name="nombre" class="form-control mb-2" placeholder="Nombre del Producto" required>
+            <select name="tipo" class="form-select mb-3">
+                <option value="Caliente">Caliente</option>
+                <option value="Fría">Fría</option>
+                <option value="Snack">Snack</option>
+            </select>
+
+            <h6 class="mt-3 mb-2">📏 Tamaños y Precios</h6>
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="form-label small fw-bold text-success">🟢 Chico</label>
+                    <input type="text" name="tamano_chico" class="form-control mb-2" placeholder="Precio" value="0">
+                    <input type="text" name="stock_chico" class="form-control mb-2" placeholder="Stock" value="0">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label small fw-bold text-primary">🔵 Grande</label>
+                    <input type="text" name="tamano_grande" class="form-control mb-2" placeholder="Precio" value="0">
+                    <input type="text" name="stock_grande" class="form-control mb-2" placeholder="Stock" value="0">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success w-100 fw-bold mt-3">Guardar Producto</button>
+        </form></div>
+    </div>
+
+    <!-- MODAL NUEVO CAJERO -->
+    <div class="modal fade" id="modalCajero" tabindex="-1">
+        <div class="modal-dialog"><form id="form-nuevo-cajero" class="modal-content p-4">
+            <h5>👤 Nuevo Cajero</h5>
+            <input type="text" name="usuario" class="form-control mb-2" placeholder="Usuario" required>
+            <input type="password" name="password" class="form-control mb-3" placeholder="Contraseña" required>
+            <button type="submit" class="btn btn-primary w-100 fw-bold">Registrar</button>
+        </form></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // ==========================================
+        // CONTROL DE ACCESO
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            const rol = sessionStorage.getItem('rol');
+            if (!rol || rol.toLowerCase().trim() !== 'admin') {
+                alert("Acceso denegado. Se requieren credenciales de Administrador.");
+                window.location.href = "sesion.html";
+                return;
+            }
+            cargarInventario();
+            cargarPedidos();
+        });
+
+        // ==========================================
+        // CARGAR PEDIDOS
+        // ==========================================
+        async function cargarPedidos() {
+            const contenedor = document.getElementById('tabla-pedidos');
+
+            try {
+                const res = await fetch('/api/pedidos');
+                const pedidos = await res.json();
+
+                if (!pedidos || pedidos.length === 0) {
+                    contenedor.innerHTML = `
+                        <div class="text-center py-4">
+                            <i class="fas fa-inbox" style="font-size: 3rem; color: var(--morado); opacity: 0.3;"></i>
+                            <p class="mt-2 text-muted">No hay pedidos registrados</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = `
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center align-middle">
+                            <thead>
+                                <tr>
+                                    <th># Pedido</th>
+                                    <th>Cliente</th>
+                                    <th>Productos</th>
+                                    <th>Total</th>
+                                    <th>Origen</th>
+                                    <th>Estado</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+
+                pedidos.forEach((pedido, index) => {
+                    const fecha = new Date(pedido.fecha);
+                    const fechaFormateada = !isNaN(fecha.getTime()) ?
+                        fecha.toLocaleDateString('es-MX', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        }) : 'Fecha no disponible';
+
+                    let productosTexto = 'Sin productos';
+                    if (pedido.productos && Array.isArray(pedido.productos) && pedido.productos.length > 0) {
+                        productosTexto = pedido.productos.map(p => {
+                            const nombre = p.nombre || 'Producto';
+                            const cantidad = p.cantidad || 1;
+                            const tamaño = p.tamaño ? ` (${p.tamaño})` : '';
+                            return `${nombre}${tamaño} x${cantidad}`;
+                        }).join('<br>');
+                    }
+
+                    const nombreCliente = pedido.cliente?.nombre || 'Cliente anónimo';
+                    const emailCliente = pedido.cliente?.email || '';
+                    const origen = pedido.origen || 'cajero';
+                    const origenBadge = origen === 'tienda_online' ? 'tienda' : 'cajero';
+                    const estadoClass = pedido.estado ? pedido.estado.toLowerCase() : 'pendiente';
+                    const estadoLabel = pedido.estado || 'Pendiente';
+                    const total = pedido.total || 0;
+
+                    // Mostrar botones según el estado actual
+                    let botonesAccion = '';
+                    const estadoActual = pedido.estado;
+
+                    if (estadoActual === 'Entregado' || estadoActual === 'Cancelado' || estadoActual === 'Devolución') {
+                        botonesAccion = `<span class="text-muted small">Pedido finalizado</span>`;
+                    } else {
+                        botonesAccion = `
+                            <button class="btn-estado confirmar" onclick="cambiarEstado('${pedido._id}', 'Confirmado')">✅ Confirmar</button>
+                            <button class="btn-estado preparar" onclick="cambiarEstado('${pedido._id}', 'Preparando')">👨‍🍳 Preparar</button>
+                            <button class="btn-estado listoo" onclick="cambiarEstado('${pedido._id}', 'Listo')">🎯 Listo</button>
+                            <button class="btn-estado entregar" onclick="cambiarEstado('${pedido._id}', 'Entregado')">📦 Entregar</button>
+                            <button class="btn-estado devolucion" onclick="cambiarEstado('${pedido._id}', 'Devolución')">🔄 Devolución</button>
+                            <button class="btn-estado cancelar" onclick="cambiarEstado('${pedido._id}', 'Cancelado')">❌ Cancelar</button>
+                        `;
+                    }
+
+                    html += `
+                        <tr>
+                            <td><strong>#${index + 1}</strong><br><small class="text-muted">${fechaFormateada}</small></td>
+                            <td>
+                                <div class="pedido-cliente">${nombreCliente}</div>
+                                <div class="pedido-email">${emailCliente}</div>
+                            </td>
+                            <td class="text-start small">${productosTexto}</td>
+                            <td class="fw-bold text-success">$${total.toFixed(2)}</td>
+                            <td><span class="badge-origen ${origenBadge}">${origen === 'tienda_online' ? '🛒 Tienda' : '🧑‍💼 Cajero'}</span></td>
+                            <td><span class="badge-estado ${estadoClass}">${estadoLabel}</span></td>
+                            <td>
+                                <div class="d-flex flex-column gap-1">
+                                    ${botonesAccion}
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                html += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+
+                contenedor.innerHTML = html;
+
+            } catch (error) {
+                console.error('Error al cargar pedidos:', error);
+                contenedor.innerHTML = `
+                    <div class="text-center py-4 text-danger">
+                        <i class="fas fa-exclamation-circle" style="font-size: 2rem;"></i>
+                        <p class="mt-2">Error al cargar los pedidos</p>
+                    </div>
+                `;
+            }
+        }
+
+        // ==========================================
+        // CAMBIAR ESTADO DEL PEDIDO
+        // ==========================================
+        async function cambiarEstado(pedidoId, nuevoEstado) {
+            if (!confirm(`¿Cambiar estado del pedido a "${nuevoEstado}"?`)) return;
+
+            try {
+                const res = await fetch(`/api/pedidos/${pedidoId}/estado`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ estado: nuevoEstado })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    alert(`✅ Estado actualizado a "${nuevoEstado}"`);
+                    cargarPedidos();
+                } else {
+                    alert('❌ Error: ' + data.mensaje);
+                }
+            } catch (error) {
+                console.error('Error al cambiar estado:', error);
+                alert('❌ Error al conectar con el servidor.');
+            }
+        }
+
+        // ==========================================
+        // FUNCIONES EXISTENTES
+        // ==========================================
+
+        async function cargarInventario() {
+            try {
+                const respuesta = await fetch('/api/productos');
+                const productos = await respuesta.json();
+
+                document.getElementById('tabla-calientes').innerHTML = '';
+                document.getElementById('tabla-frias').innerHTML = '';
+                document.getElementById('tabla-snacks').innerHTML = '';
+
+                const calientes = productos.filter(p => p.tipo === 'Caliente');
+                const frias = productos.filter(p => p.tipo === 'Fría' || p.tipo === 'Fria');
+                const snacks = productos.filter(p => p.tipo === 'Snack');
+
+                renderizarProductos(calientes, 'tabla-calientes');
+                renderizarProductos(frias, 'tabla-frias');
+                renderizarProductos(snacks, 'tabla-snacks');
+
+            } catch (error) {
+                console.error("Error al cargar inventario:", error);
+            }
+        }
+
+        function renderizarProductos(productos, tablaId) {
+            const tbody = document.getElementById(tablaId);
+
+            if (productos.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="text-muted py-3">
+                            <em>No hay productos en esta categoría</em>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            productos.forEach(p => {
+                const idString = p._id.toString();
+                const idVisual = idString.length > 10 ? `#${idString.slice(-6)}` : idString;
+
+                let tamanosHTML = '';
+                let stockTotal = 0;
+
+                if (p.tamaños && p.tamaños.length > 0) {
+                    p.tamaños.forEach(t => {
+                        const colorClase = t.tamaño === 'Chico' ? 'badge-chico' : (t.tamaño === 'Grande' ? 'badge-grande' : 'badge-tamano');
+                        tamanosHTML += `<span class="badge ${colorClase} m-1">${t.tamaño}: $${t.precio.toFixed(2)}</span><br>`;
+                        stockTotal += t.cantidad;
+                    });
+                } else {
+                    tamanosHTML = `<span class="badge badge-tamano">Único: $${p.precio.toFixed(2)}</span>`;
+                    stockTotal = p.cantidad || 0;
+                }
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td><span class="badge bg-light text-dark border fw-bold">${idVisual}</span></td>
+                        <td class="text-start"><strong>${p.nombre}</strong></td>
+                        <td>${tamanosHTML}</td>
+                        <td><span class="badge ${stockTotal > 5 ? 'bg-dark' : 'bg-danger'} p-2">${stockTotal} pz</span></td>
+                        <td>
+                            <div class="d-flex justify-content-center gap-2">
+                                <button class="btn btn-warning btn-sm" onclick="abrirModalInfo('${p._id}', '${p.nombre}', '${p.tipo}')">✏️ Info</button>
+                                <button class="btn btn-primary btn-sm" onclick="abrirModalStock('${p._id}')">📦 Stock</button>
+                                <button class="btn btn-danger btn-sm" onclick="eliminarProducto('${p._id}')">🗑️</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function abrirModalInfo(id, nombre, tipo) {
+            document.getElementById('edit-id-info').value = id;
+            document.getElementById('edit-nombre').value = nombre;
+            document.getElementById('edit-tipo').value = tipo;
+            new bootstrap.Modal(document.getElementById('modalEditarInfo')).show();
+        }
+
+        function abrirModalStock(id) {
+            document.getElementById('edit-id-stock').value = id;
+            fetch(`/api/productos`)
+                .then(res => res.json())
+                .then(productos => {
+                    const producto = productos.find(p => p._id === id);
+                    if (producto && producto.tamaños && producto.tamaños.length > 0) {
+                        const select = document.getElementById('edit-tamano');
+                        select.innerHTML = '';
+                        producto.tamaños.forEach(t => {
+                            const option = document.createElement('option');
+                            option.value = t.tamaño;
+                            option.textContent = `${t.tamaño} - $${t.precio.toFixed(2)} (${t.cantidad} disp.)`;
+                            select.appendChild(option);
+                        });
+                        document.getElementById('edit-precio').value = producto.tamaños[0].precio;
+                        document.getElementById('edit-cantidad').value = producto.tamaños[0].cantidad;
+                    }
+                });
+            new bootstrap.Modal(document.getElementById('modalEditarStock')).show();
+        }
+
+        document.getElementById('edit-tamano').addEventListener('change', function() {
+            const id = document.getElementById('edit-id-stock').value;
+            const tamanoSeleccionado = this.value;
+
+            fetch(`/api/productos`)
+                .then(res => res.json())
+                .then(productos => {
+                    const producto = productos.find(p => p._id === id);
+                    if (producto && producto.tamaños) {
+                        const tamaño = producto.tamaños.find(t => t.tamaño === tamanoSeleccionado);
+                        if (tamaño) {
+                            document.getElementById('edit-precio').value = tamaño.precio;
+                            document.getElementById('edit-cantidad').value = tamaño.cantidad;
+                        }
+                    }
+                });
+        });
+
+        document.getElementById('form-nuevo-producto').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+
+            const nombre = formData.get('nombre');
+            const tipo = formData.get('tipo');
+            const precioChico = parseFloat(formData.get('tamano_chico')) || 0;
+            const stockChico = parseInt(formData.get('stock_chico')) || 0;
+            const precioGrande = parseFloat(formData.get('tamano_grande')) || 0;
+            const stockGrande = parseInt(formData.get('stock_grande')) || 0;
+
+            const data = {
+                nombre: nombre,
+                tipo: tipo,
+                tamaños: [
+                    { tamaño: "Chico", precio: precioChico, cantidad: stockChico },
+                    { tamaño: "Grande", precio: precioGrande, cantidad: stockGrande }
+                ]
+            };
+
+            try {
+                const res = await fetch('/api/productos/agregar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const resultado = await res.json();
+                if (resultado.success) {
+                    alert("✅ Producto agregado con éxito!");
+                    location.reload();
+                } else {
+                    alert(resultado.mensaje);
+                }
+            } catch (error) {
+                console.error("Error al agregar producto:", error);
+            }
+        });
+
+        document.getElementById('form-editar-info').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('edit-id-info').value;
+            const nombre = document.getElementById('edit-nombre').value;
+            const tipo = document.getElementById('edit-tipo').value;
+
+            try {
+                const res = await fetch(`/api/productos/editar-info/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nombre, tipo })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert("✅ Producto actualizado con éxito.");
+                    location.reload();
+                } else {
+                    alert(data.mensaje);
+                }
+            } catch (error) {
+                console.error("Error al actualizar información:", error);
+            }
+        });
+
+        document.getElementById('form-editar-stock').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('edit-id-stock').value;
+            const tamaño = document.getElementById('edit-tamano').value;
+            const precio = document.getElementById('edit-precio').value;
+            const cantidad = document.getElementById('edit-cantidad').value;
+
+            try {
+                const res = await fetch(`/api/productos/editar-stock/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ precio, cantidad, tamaño })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert("✅ Inventario modificado correctamente.");
+                    location.reload();
+                } else {
+                    alert(data.mensaje);
+                }
+            } catch (error) {
+                console.error("Error al modificar inventario:", error);
+            }
+        });
+
+        async function eliminarProducto(id) {
+            if (!confirm("⚠️ ¿Seguro que deseas eliminar permanentemente este producto?")) return;
+
+            try {
+                const res = await fetch(`/api/productos/eliminar/${id}`, {
+                    method: 'DELETE'
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert("✅ Producto eliminado correctamente.");
+                    location.reload();
+                } else {
+                    alert(data.mensaje);
+                }
+            } catch (error) {
+                console.error("Error al eliminar producto:", error);
+            }
+        }
+
+        document.getElementById('form-nuevo-cajero').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+
+            try {
+                const res = await fetch('/api/usuarios/registrar-cajero', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const resultado = await res.json();
+                if (resultado.success) {
+                    alert("✅ ¡Cajero registrado exitosamente!");
+                    location.reload();
+                } else {
+                    alert(resultado.mensaje);
+                }
+            } catch (error) {
+                console.error("Error al registrar cajero:", error);
+            }
+        });
+
+        function cerrarSesion() {
+            sessionStorage.clear();
+            window.location.href = "sesion.html";
+        }
+    </script>
+</body>
+</html>

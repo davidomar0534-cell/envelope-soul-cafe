@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte | Envelope Soul Café</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* ========================================
+                   PALETA DE COLORES
+           ======================================== */
+        :root {
+            --morado: #7A1FA1;
+            --morado-oscuro: #5a1678;
+            --guinda: #670A2B;
+            --guinda-claro: #8a0f3a;
+            --blanco: #FEFEFF;
+            --crema: #f5f0eb;
+            --texto-oscuro: #2d1a1a;
+            --sombra: rgba(122, 31, 161, 0.25);
+        }
+
+        body {
+            background: var(--crema);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--texto-oscuro);
+        }
+
+        /* ========================================
+                   NAVBAR CON LOGO
+           ======================================== */
+        .navbar-custom {
+            background: linear-gradient(135deg, var(--morado) 0%, var(--guinda) 100%);
+            padding: 10px 0;
+            box-shadow: 0 4px 25px var(--sombra);
+        }
+
+        .navbar-custom .navbar-brand {
+            color: var(--blanco) !important;
+            font-weight: 800;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .navbar-custom .navbar-brand:hover {
+            transform: scale(1.02);
+        }
+
+        .navbar-custom .navbar-brand .logo-img {
+            height: 45px;
+            width: auto;
+            border-radius: 10px;
+            object-fit: contain;
+        }
+
+        .navbar-custom .navbar-brand span {
+            color: #d4a0e0;
+        }
+
+        .navbar-custom .navbar-brand .soul {
+            color: #e8c9f0;
+            font-style: italic;
+        }
+
+        .btn-volver {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: var(--blanco);
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-volver:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05);
+            color: var(--blanco);
+        }
+
+        .btn-volver i {
+            margin-right: 8px;
+        }
+
+        /* ========================================
+                   TARJETAS DE RESUMEN
+           ======================================== */
+        .card-resumen {
+            border: none;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            color: var(--blanco);
+            transition: all 0.3s;
+        }
+
+        .card-resumen:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px var(--sombra);
+        }
+
+        .card-resumen.ventas {
+            background: linear-gradient(135deg, var(--morado), var(--morado-oscuro));
+        }
+
+        .card-resumen.pedidos {
+            background: linear-gradient(135deg, var(--guinda), var(--guinda-claro));
+        }
+
+        .card-resumen.productos {
+            background: linear-gradient(135deg, #28a745, #1e7e34);
+        }
+
+        .card-resumen.total {
+            background: linear-gradient(135deg, #17a2b8, #0d6efd);
+        }
+
+        .card-resumen h6 {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-resumen h3 {
+            font-weight: 800;
+            font-size: 1.8rem;
+            margin: 4px 0 0;
+        }
+
+        .card-resumen .icono {
+            font-size: 1.5rem;
+            opacity: 0.3;
+            margin-bottom: 4px;
+        }
+
+        /* ========================================
+                   TABLAS
+           ======================================== */
+        .card-custom {
+            border: none;
+            border-radius: 20px;
+            background: var(--blanco);
+            box-shadow: 0 4px 15px rgba(122, 31, 161, 0.08);
+            padding: 30px;
+        }
+
+        .titulo {
+            color: var(--morado);
+            font-weight: 800;
+        }
+
+        .titulo i {
+            color: var(--guinda);
+            margin-right: 10px;
+        }
+
+        .table thead {
+            background: linear-gradient(135deg, var(--morado), var(--guinda));
+            color: var(--blanco);
+        }
+
+        .table thead th {
+            border: none;
+            padding: 12px 16px;
+            font-weight: 600;
+        }
+
+        .table tbody td {
+            padding: 12px 16px;
+            vertical-align: middle;
+            border-bottom: 1px solid #f0e8e0;
+        }
+
+        .table tbody tr:hover {
+            background: #faf8f6;
+        }
+
+        .badge-tamano {
+            background-color: #D9944E;
+            color: #fff;
+        }
+
+        .badge-cantidad {
+            background-color: var(--morado);
+            color: #fff;
+        }
+
+        .badge-origen {
+            font-size: 10px;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .badge-origen.tienda {
+            background: var(--morado);
+            color: #fff;
+        }
+
+        .badge-origen.cajero {
+            background: var(--guinda);
+            color: #fff;
+        }
+
+        .badge-estado {
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-estado.pendiente {
+            background: #ffc107;
+            color: #000;
+        }
+
+        .badge-estado.confirmado {
+            background: #17a2b8;
+            color: #fff;
+        }
+
+        .badge-estado.preparando {
+            background: #007bff;
+            color: #fff;
+        }
+
+        .badge-estado.listoo {
+            background: #28a745;
+            color: #fff;
+        }
+
+        .badge-estado.entregado {
+            background: #28a745;
+            color: #fff;
+        }
+
+        .badge-estado.cancelado {
+            background: #dc3545;
+            color: #fff;
+        }
+        
+        .badge-estado.devolucion {
+            background: #fd7e14;
+            color: #fff;
+        }
+        /* ========================================
+                   TABS
+           ======================================== */
+        .nav-tabs .nav-link {
+            color: var(--texto-oscuro);
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 24px;
+            transition: all 0.3s;
+        }
+
+        .nav-tabs .nav-link:hover {
+            background: #f0e8e0;
+            color: var(--morado);
+        }
+
+        .nav-tabs .nav-link.active {
+            background: linear-gradient(135deg, var(--morado), var(--guinda));
+            color: var(--blanco);
+            border: none;
+        }
+
+        .nav-tabs .nav-link i {
+            margin-right: 8px;
+        }
+
+        /* ========================================
+                   RESPONSIVE
+           ======================================== */
+        @media (max-width: 768px) {
+            .navbar-custom .navbar-brand .logo-img {
+                height: 35px;
+            }
+            .card-resumen h3 {
+                font-size: 1.3rem;
+            }
+            .card-custom {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navbar-custom .navbar-brand {
+                font-size: 1.1rem;
+            }
+            .navbar-custom .navbar-brand .logo-img {
+                height: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================
+    NAVBAR CON LOGO
+    ========================================== -->
+    <nav class="navbar navbar-custom navbar-dark shadow mb-4">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="index.html">
+                <img src="/img/borde.png" alt="Envelope Soul Café" class="logo-img" onerror="this.style.display='none'">
+                Envelope <span class="soul">Soul</span> <span>Café</span>
+            </a>
+            <button onclick="regresarAlPanel()" class="btn-volver">
+                <i class="fas fa-arrow-left"></i> Volver al Panel
+            </button>
+        </div>
+    </nav>
+
+    <div class="container mb-5">
+
+        <!-- ==========================================
+        HERRAMIENTAS ADMIN
+        ========================================== -->
+        <div id="contenedor-admin-tools" class="d-flex justify-content-end mb-3"></div>
+
+        <!-- ==========================================
+        RESUMEN GENERAL
+        ========================================== -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-3 col-6">
+                <div class="card-resumen ventas">
+                    <div class="icono"><i class="fas fa-coins"></i></div>
+                    <h6>💰 Total Ventas</h6>
+                    <h3 id="total-ventas">$0.00</h3>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card-resumen pedidos">
+                    <div class="icono"><i class="fas fa-clipboard-list"></i></div>
+                    <h6>📦 Total Pedidos</h6>
+                    <h3 id="total-pedidos">0</h3>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card-resumen productos">
+                    <div class="icono"><i class="fas fa-box"></i></div>
+                    <h6>📝 Productos Vendidos</h6>
+                    <h3 id="total-productos">0</h3>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card-resumen total">
+                    <div class="icono"><i class="fas fa-chart-line"></i></div>
+                    <h6>💰 Ingresos Totales</h6>
+                    <h3 id="total-general">$0.00</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================
+        TABS: VENTAS | PEDIDOS
+        ========================================== -->
+        <div class="card card-custom shadow p-4 bg-white">
+            <h4 class="text-center titulo mb-4">
+                <i class="fas fa-chart-bar"></i> Reporte General
+            </h4>
+
+            <ul class="nav nav-tabs justify-content-center mb-4" id="reporteTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="ventas-tab" data-bs-toggle="tab" data-bs-target="#ventas" type="button" role="tab">
+                        <i class="fas fa-coins"></i> Ventas de Cajeros
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pedidos-tab" data-bs-toggle="tab" data-bs-target="#pedidos" type="button" role="tab">
+                        <i class="fas fa-clipboard-list"></i> Pedidos en Línea
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="reporteTabsContent">
+
+                <!-- TAB VENTAS -->
+                <div class="tab-pane fade show active" id="ventas" role="tabpanel">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover text-center align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Productos</th>
+                                    <th>Total</th>
+                                    <th>Cajero</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-ventas"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TAB PEDIDOS -->
+                <div class="tab-pane fade" id="pedidos" role="tabpanel">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover text-center align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Cliente</th>
+                                    <th>Productos</th>
+                                    <th>Total</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-pedidos"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // ==========================================
+        // VERIFICAR SESIÓN
+        // ==========================================
+        function verificarSesion() {
+            const rol = sessionStorage.getItem('rol');
+            if (!sessionStorage.getItem('id_usuario') || (rol !== 'cajero' && rol !== 'admin')) {
+                sessionStorage.clear();
+                window.location.href = "sesion.html";
+            }
+        }
+
+        function regresarAlPanel() {
+            const rol = sessionStorage.getItem('rol');
+            if (rol === 'admin') {
+                window.location.href = "admin.html";
+            } else {
+                window.location.href = "cajero.html";
+            }
+        }
+
+        // ==========================================
+        // HERRAMIENTAS ADMIN
+        // ==========================================
+        function cargarHerramientasAdmin() {
+            const rol = sessionStorage.getItem('rol');
+            if (rol === 'admin') {
+                const contenedor = document.getElementById('contenedor-admin-tools');
+                contenedor.innerHTML = `
+                    <button onclick="limpiarReporteVentas()" class="btn btn-danger fw-bold shadow">
+                        🗑️ Vaciar Historial de Ventas
+                    </button>
+                `;
+            }
+        }
+
+        async function limpiarReporteVentas() {
+            if (!confirm("¿Estás completamente seguro de eliminar todo el historial de ventas? Esta acción es irreversible.")) return;
+
+            try {
+                const res = await fetch('/api/ventas/limpiar', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-User-ID': sessionStorage.getItem('id_usuario')
+                    }
+                });
+
+                const data = await res.json();
+                alert(data.mensaje);
+
+                if (data.success) {
+                    location.reload();
+                }
+            } catch (error) {
+                console.error("Error al limpiar el reporte:", error);
+                alert("Hubo un problema de conexión al intentar vaciar el reporte.");
+            }
+        }
+
+        // ==========================================
+        // OBTENER DETALLES DE VENTAS
+        // ==========================================
+        async function obtenerVentas() {
+            const tbody = document.getElementById('tabla-ventas');
+            try {
+                const resProd = await fetch('/api/productos');
+                const productosCatalogo = await resProd.json();
+
+                const mapaProductos = {};
+                productosCatalogo.forEach(p => {
+                    if (p._id !== undefined && p._id !== null) {
+                        mapaProductos[p._id.toString().trim()] = p.nombre;
+                    }
+                });
+
+                const respuesta = await fetch('/api/ventas/reporte');
+                const ventas = await respuesta.json();
+
+                tbody.innerHTML = '';
+
+                if (!ventas || ventas.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="text-muted py-3">No hay ventas registradas</td></tr>`;
+                    return;
+                }
+
+                ventas.forEach(venta => {
+                    let detalleProductos = "Sin productos";
+                    if (venta.productos && Array.isArray(venta.productos)) {
+                        detalleProductos = venta.productos.map(p => {
+                            if (!p.id_producto) return `Producto Desconocido (${p.cantidad || 1} pz)`;
+                            const idBuscado = p.id_producto.toString().trim();
+                            const nombreReal = mapaProductos[idBuscado] || `Producto #${idBuscado}`;
+                            const tamaño = p.tamaño ? ` <span class="badge badge-tamano">${p.tamaño}</span>` : '';
+                            return `${nombreReal}${tamaño} <span class="badge badge-cantidad">x${p.cantidad}</span>`;
+                        }).join(', ');
+                    }
+
+                    const nombreCajero = venta.nombre_cajero || "Sistema";
+
+                    let fechaFormateada = "Fecha inválida";
+                    if (venta.fecha) {
+                        const fechaObj = new Date(venta.fecha);
+                        fechaFormateada = isNaN(fechaObj.getTime()) ? venta.fecha : fechaObj.toLocaleString('es-MX');
+                    }
+
+                    const totalFormateado = (venta.total && !isNaN(venta.total)) ? parseFloat(venta.total).toFixed(2) : "0.00";
+
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${fechaFormateada}</td>
+                            <td class="text-start small">${detalleProductos}</td>
+                            <td class="fw-bold text-success">$${totalFormateado}</td>
+                            <td>${nombreCajero}</td>
+                        </tr>
+                    `;
+                });
+
+            } catch (error) {
+                console.error("Error al cargar ventas:", error);
+                tbody.innerHTML = `<tr><td colspan="4" class="text-danger py-3">❌ Error al cargar los datos</td></tr>`;
+            }
+        }
+
+        // ==========================================
+        // OBTENER DETALLES DE PEDIDOS
+        // ==========================================
+        async function obtenerPedidos() {
+            const tbody = document.getElementById('tabla-pedidos');
+            try {
+                const res = await fetch('/api/pedidos');
+                const pedidos = await res.json();
+
+                tbody.innerHTML = '';
+
+                if (!pedidos || pedidos.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="text-muted py-3">No hay pedidos registrados</td></tr>`;
+                    return;
+                }
+
+                // Solo mostrar pedidos de tienda online
+                const pedidosTienda = pedidos.filter(p => p.origen === 'tienda_online');
+
+                if (pedidosTienda.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="text-muted py-3">No hay pedidos en línea</td></tr>`;
+                    return;
+                }
+
+                pedidosTienda.forEach(pedido => {
+                    const fecha = new Date(pedido.fecha);
+                    const fechaFormateada = !isNaN(fecha.getTime()) ?
+                        fecha.toLocaleString('es-MX') : 'Fecha no disponible';
+
+                    let productosTexto = 'Sin productos';
+                    if (pedido.productos && Array.isArray(pedido.productos) && pedido.productos.length > 0) {
+                        productosTexto = pedido.productos.map(p => {
+                            const nombre = p.nombre || 'Producto';
+                            const cantidad = p.cantidad || 1;
+                            const tamaño = p.tamaño ? ` (${p.tamaño})` : '';
+                            return `${nombre}${tamaño} x${cantidad}`;
+                        }).join(', ');
+                    }
+
+                    const nombreCliente = pedido.cliente?.nombre || 'Cliente anónimo';
+                    const estadoClass = pedido.estado ? pedido.estado.toLowerCase() : 'pendiente';
+                    const estadoLabel = pedido.estado || 'Pendiente';
+                    const total = pedido.total || 0;
+
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${fechaFormateada}</td>
+                            <td><strong>${nombreCliente}</strong></td>
+                            <td class="text-start small">${productosTexto}</td>
+                            <td class="fw-bold text-success">$${total.toFixed(2)}</td>
+                            <td><span class="badge-estado ${estadoClass}">${estadoLabel}</span></td>
+                        </tr>
+                    `;
+                });
+
+            } catch (error) {
+                console.error("Error al cargar pedidos:", error);
+                tbody.innerHTML = `<tr><td colspan="5" class="text-danger py-3">❌ Error al cargar los datos</td></tr>`;
+            }
+        }
+
+        // ==========================================
+        // ACTUALIZAR RESUMEN GENERAL
+        // ==========================================
+        async function actualizarResumen() {
+            try {
+                // Ventas
+                const resVentas = await fetch('/api/ventas/reporte');
+                const ventas = await resVentas.json();
+
+                let totalVentas = 0;
+                let totalProductos = 0;
+
+                if (ventas && ventas.length > 0) {
+                    ventas.forEach(v => {
+                        totalVentas += v.total || 0;
+                        if (v.productos && Array.isArray(v.productos)) {
+                            v.productos.forEach(p => {
+                                totalProductos += parseInt(p.cantidad) || 0;
+                            });
+                        }
+                    });
+                }
+
+                // Pedidos
+                const resPedidos = await fetch('/api/pedidos');
+                const pedidos = await resPedidos.json();
+
+                let totalPedidos = 0;
+                let totalPedidosMonto = 0;
+
+                if (pedidos && pedidos.length > 0) {
+                    const pedidosTienda = pedidos.filter(p => p.origen === 'tienda_online');
+                    totalPedidos = pedidosTienda.length;
+                    pedidosTienda.forEach(p => {
+                        totalPedidosMonto += p.total || 0;
+                    });
+                }
+
+                document.getElementById('total-ventas').textContent = `$${totalVentas.toFixed(2)}`;
+                document.getElementById('total-pedidos').textContent = totalPedidos;
+                document.getElementById('total-productos').textContent = totalProductos;
+                document.getElementById('total-general').textContent = `$${(totalVentas + totalPedidosMonto).toFixed(2)}`;
+
+            } catch (error) {
+                console.error('Error al actualizar resumen:', error);
+            }
+        }
+
+        // ==========================================
+        // INICIALIZAR
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            verificarSesion();
+            cargarHerramientasAdmin();
+            obtenerVentas();
+            obtenerPedidos();
+            actualizarResumen();
+        });
+    </script>
+</body>
+</html>

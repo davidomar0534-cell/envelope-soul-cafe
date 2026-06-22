@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión | Envelope Soul Café</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --morado: #7A1FA1;
+            --morado-oscuro: #5a1678;
+            --guinda: #670A2B;
+            --guinda-claro: #8a0f3a;
+            --blanco: #FEFEFF;
+            --crema: #f5f0eb;
+            --texto-oscuro: #2d1a1a;
+            --sombra: rgba(122, 31, 161, 0.2);
+        }
+
+        body {
+            background: var(--crema);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .card-login {
+            max-width: 420px;
+            width: 100%;
+            background: var(--blanco);
+            border-radius: 24px;
+            padding: 40px 35px;
+            box-shadow: 0 8px 40px var(--sombra);
+        }
+
+        .card-login .logo {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .card-login .logo img {
+            height: 60px;
+            width: auto;
+        }
+
+        .card-login .logo h4 {
+            color: var(--morado);
+            font-weight: 800;
+            margin-top: 8px;
+        }
+
+        .card-login .logo h4 span {
+            color: var(--guinda);
+        }
+
+        .card-login .logo .soul {
+            color: var(--morado-oscuro);
+            font-style: italic;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--texto-oscuro);
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            border: 2px solid #e8e0d8;
+            border-radius: 12px;
+            padding: 12px 16px;
+            transition: all 0.3s;
+            background: #faf8f6;
+        }
+
+        .form-control:focus {
+            border-color: var(--morado);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(122, 31, 161, 0.1);
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, var(--morado), var(--guinda));
+            color: var(--blanco);
+            border: none;
+            border-radius: 50px;
+            padding: 14px;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn-login:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 30px var(--sombra);
+            color: var(--blanco);
+        }
+
+        .btn-login:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-login i {
+            margin-right: 8px;
+        }
+
+        .link-registro {
+            color: var(--morado);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .link-registro:hover {
+            color: var(--guinda);
+            text-decoration: underline;
+        }
+
+        .alert-custom {
+            border-radius: 12px;
+            padding: 12px 16px;
+        }
+
+        .recordar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #6c5a4a;
+            cursor: pointer;
+        }
+
+        .recordar input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--morado);
+            cursor: pointer;
+        }
+
+        @media (max-width: 576px) {
+            .card-login {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card-login">
+        <!-- Logo -->
+        <div class="logo">
+            <img src="/img/borde.png" alt="Envelope Soul Café" onerror="this.style.display='none'">
+            <h4>Envelope <span class="soul">Soul</span> <span>Café</span></h4>
+        </div>
+
+        <h5 class="text-center mb-3 fw-bold" style="color: var(--texto-oscuro);">
+            <i class="fas fa-sign-in-alt me-2" style="color: var(--morado);"></i> Iniciar Sesión
+        </h5>
+
+        <!-- Mensaje de alerta -->
+        <div id="mensaje" class="alert-custom" style="display: none;"></div>
+
+        <form id="form-login">
+            <!-- Email -->
+            <div class="mb-3">
+                <label class="form-label" for="email">
+                    <i class="fas fa-envelope me-1"></i> Correo electrónico
+                </label>
+                <input type="email" class="form-control" id="email" placeholder="ejemplo@correo.com" required>
+            </div>
+
+            <!-- Contraseña -->
+            <div class="mb-3">
+                <label class="form-label" for="password">
+                    <i class="fas fa-lock me-1"></i> Contraseña
+                </label>
+                <input type="password" class="form-control" id="password" placeholder="Ingresa tu contraseña" required>
+            </div>
+
+            <!-- Recordar -->
+            <div class="mb-4 d-flex justify-content-between align-items-center">
+                <label class="recordar">
+                    <input type="checkbox" id="recordar"> Recordarme
+                </label>
+                <a href="#" class="link-registro" style="font-size: 0.85rem;">¿Olvidaste tu contraseña?</a>
+            </div>
+
+            <button type="submit" class="btn-login" id="btn-login">
+                <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+            </button>
+        </form>
+
+        <p class="text-center mt-3" style="color: #6c5a4a; font-size: 0.9rem;">
+            ¿No tienes cuenta? <a href="registro-cliente.html" class="link-registro">Regístrate aquí</a>
+        </p>
+    </div>
+
+    <script>
+        // ==========================================
+        // ENVIAR LOGIN
+        // ==========================================
+        document.getElementById('form-login').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const recordar = document.getElementById('recordar').checked;
+
+            if (!email || !password) {
+                mostrarMensaje('Por favor completa todos los campos.', 'danger');
+                return;
+            }
+
+            const btn = document.getElementById('btn-login');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Iniciando sesión...';
+
+            try {
+                const res = await fetch('/api/clientes/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    // Guardar sesión en localStorage
+                    localStorage.setItem('cliente_sesion', JSON.stringify(data.cliente));
+                    if (recordar) {
+                        localStorage.setItem('cliente_recordar', email);
+                    }
+                    mostrarMensaje('✅ ' + data.mensaje, 'success');
+                    setTimeout(() => {
+                        window.location.href = 'mi-cuenta.html';
+                    }, 1500);
+                } else {
+                    mostrarMensaje('❌ ' + data.mensaje, 'danger');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Iniciar Sesión';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarMensaje('❌ Error al conectar con el servidor.', 'danger');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Iniciar Sesión';
+            }
+        });
+
+        // ==========================================
+        // MOSTRAR MENSAJE
+        // ==========================================
+        function mostrarMensaje(texto, tipo) {
+            const mensaje = document.getElementById('mensaje');
+            mensaje.style.display = 'block';
+            mensaje.className = `alert-custom alert alert-${tipo}`;
+            mensaje.innerHTML = texto;
+        }
+
+        // ==========================================
+        // CARGAR EMAIL RECORDADO
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', function() {
+            const emailRecordado = localStorage.getItem('cliente_recordar');
+            if (emailRecordado) {
+                document.getElementById('email').value = emailRecordado;
+                document.getElementById('recordar').checked = true;
+            }
+        });
+    </script>
+</body>
+</html>

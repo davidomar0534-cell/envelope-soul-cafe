@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosotros | Envelope Soul Café</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* ========================================
+                   PALETA DE COLORES
+           ======================================== */
+        :root {
+            --morado: #7A1FA1;
+            --morado-oscuro: #5a1678;
+            --guinda: #670A2B;
+            --guinda-claro: #8a0f3a;
+            --blanco: #FEFEFF;
+            --crema: #f5f0eb;
+            --texto-oscuro: #2d1a1a;
+            --sombra: rgba(122, 31, 161, 0.25);
+            --sombra-guinda: rgba(103, 10, 43, 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--crema);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--texto-oscuro);
+            overflow-x: hidden;
+        }
+
+        /* ========================================
+                   NAVBAR
+           ======================================== */
+        .navbar-custom {
+            background: linear-gradient(135deg, var(--guinda) 0%, var(--morado) 100%);
+            padding: 10px 0;
+            box-shadow: 0 4px 25px var(--sombra);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .navbar-custom.scrolled {
+            padding: 6px 0;
+            box-shadow: 0 4px 30px var(--sombra);
+        }
+
+        .navbar-custom .navbar-brand {
+            color: var(--blanco) !important;
+            font-weight: 800;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .navbar-custom .navbar-brand:hover {
+            transform: scale(1.02);
+        }
+
+        .navbar-custom .navbar-brand .logo-img {
+            height: 45px;
+            width: auto;
+            border-radius: 10px;
+            object-fit: contain;
+        }
+
+        .navbar-custom .navbar-brand span {
+            color: #d4a0e0;
+        }
+
+        .navbar-custom .navbar-brand .soul {
+            color: #e8c9f0;
+            font-style: italic;
+        }
+
+        .navbar-custom .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+            padding: 8px 16px;
+        }
+
+        .navbar-custom .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: var(--blanco);
+            border-radius: 4px;
+            transition: all 0.3s;
+            transform: translateX(-50%);
+        }
+
+        .navbar-custom .nav-link:hover {
+            color: var(--blanco) !important;
+            transform: translateY(-2px);
+        }
+
+        .navbar-custom .nav-link:hover::after {
+            width: 60%;
+        }
+
+        .navbar-custom .nav-link.active {
+            opacity: 1;
+            color: var(--blanco) !important;
+        }
+
+        .navbar-custom .nav-link.active::after {
+            width: 60%;
+        }
+
+        .btn-carrito-nav {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            color: var(--blanco);
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-weight: 700;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+        }
+
+        .btn-carrito-nav:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+            color: var(--blanco);
+        }
+
+        .btn-carrito-nav .badge {
+            background: #ff6b6b;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 8px;
+            font-size: 11px;
+            font-weight: 700;
+            position: absolute;
+            top: -6px;
+            right: -6px;
+        }
+
+        /* ========================================
+                   HERO
+           ======================================== */
+        .hero {
+            background: linear-gradient(135deg, var(--guinda) 0%, var(--morado) 100%);
+            padding: 80px 0 100px;
+            text-align: center;
+            color: var(--blanco);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(255, 255, 255, 0.04) 0%, transparent 50%);
+            animation: shimmer 10s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+        }
+
+        .hero h1 {
+            font-weight: 800;
+            font-size: 3.5rem;
+            position: relative;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero h1 .gota {
+            display: inline-block;
+            background: radial-gradient(ellipse at 30% 30%, #ffffff, rgba(255, 255, 255, 0.15));
+            border-radius: 50%;
+            width: 40px;
+            height: 50px;
+            margin: 0 5px;
+            transform: rotate(-20deg);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.15);
+            vertical-align: middle;
+            animation: flotar 3s ease-in-out infinite;
+        }
+
+        @keyframes flotar {
+            0%, 100% { transform: rotate(-20deg) translateY(0); }
+            50% { transform: rotate(-20deg) translateY(-10px); }
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ========================================
+                   SECCIÓN HISTORIA
+           ======================================== */
+        .seccion-historia {
+            padding: 60px 0;
+            background: var(--blanco);
+        }
+        .seccion-ubicacion {
+            padding: 60px 0;
+            background: var(--blanco);
+        }
+
+        .seccion-titulo {
+            color: var(--morado);
+            font-weight: 800;
+            position: relative;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+
+        .seccion-titulo::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--morado), var(--guinda));
+            border-radius: 4px;
+        }
+
+        .seccion-titulo i {
+            color: var(--guinda);
+            margin-right: 10px;
+        }
+
+        .texto-historia {
+            font-size: 1.05rem;
+            line-height: 1.9;
+            color: #5a4a3a;
+        }
+
+        /* ========================================
+                   SECCIÓN CAFÉ
+           ======================================== */
+        .seccion-cafe {
+            padding: 60px 0;
+            background: var(--crema);
+        }
+
+        /* ========================================
+                   SECCIÓN EQUIPO
+           ======================================== */
+        .seccion-equipo {
+            padding: 60px 0;
+            background: var(--blanco);
+        }
+
+        .card-equipo {
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            background: var(--crema);
+            padding: 30px 20px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            height: 100%;
+            box-shadow: 0 4px 15px rgba(122, 31, 161, 0.06);
+        }
+
+        .card-equipo:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px var(--sombra);
+            background: var(--blanco);
+        }
+
+        .card-equipo .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--morado), var(--guinda));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 2.5rem;
+            color: var(--blanco);
+        }
+
+        .card-equipo h6 {
+            font-weight: 800;
+            color: var(--morado);
+        }
+
+        .card-equipo .rol {
+            font-size: 0.85rem;
+            color: var(--guinda);
+            font-weight: 600;
+        }
+
+        .card-equipo p {
+            font-size: 0.9rem;
+            color: #6c5a4a;
+            margin-top: 8px;
+        }
+
+        /* ========================================
+                   SECCIÓN VALORES
+           ======================================== */
+        .seccion-valores {
+            padding: 60px 0;
+            background: var(--crema);
+        }
+
+        .card-valor {
+            border: none;
+            border-radius: 16px;
+            background: var(--blanco);
+            padding: 25px 20px;
+            text-align: center;
+            transition: all 0.3s;
+            height: 100%;
+            box-shadow: 0 4px 15px rgba(122, 31, 161, 0.06);
+        }
+
+        .card-valor:hover {
+            box-shadow: 0 8px 30px var(--sombra);
+            transform: translateY(-5px);
+        }
+
+        .card-valor .icono {
+            font-size: 2.5rem;
+            color: var(--morado);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .card-valor h6 {
+            font-weight: 700;
+            color: var(--texto-oscuro);
+        }
+
+        .card-valor p {
+            font-size: 0.85rem;
+            color: #6c5a4a;
+            margin-top: 4px;
+        }
+
+        /* ========================================
+                   FOOTER
+           ======================================== */
+        .footer {
+            background: linear-gradient(135deg, var(--guinda), var(--morado));
+            color: var(--blanco);
+            padding: 50px 0 20px;
+            margin-top: 0;
+        }
+
+        .footer a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .footer a:hover {
+            color: var(--blanco);
+            transform: translateX(5px);
+        }
+
+        .footer .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            transition: all 0.3s;
+            color: var(--blanco);
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+
+        .footer .social-icon:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-5px) scale(1.05);
+            color: var(--blanco);
+        }
+
+        /* ========================================
+                   RESPONSIVE
+           ======================================== */
+        @media (max-width: 768px) {
+            .hero { padding: 50px 0 70px; }
+            .hero h1 { font-size: 2.2rem; }
+            .hero h1 .gota { width: 30px; height: 38px; }
+            .seccion-titulo { font-size: 1.4rem; }
+            .texto-historia { font-size: 0.95rem; }
+            .navbar-custom .navbar-brand .logo-img { height: 35px; }
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 { font-size: 1.8rem; }
+            .navbar-custom .navbar-brand { font-size: 1.1rem; }
+            .navbar-custom .navbar-brand .logo-img { height: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================
+    NAVBAR
+    ========================================== -->
+    <nav class="navbar navbar-custom navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="/img/borde.png" alt="Envelope Soul Café" class="logo-img" onerror="this.style.display='none'">
+                Envelope <span class="soul">Soul</span> <span>Café</span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center gap-1 gap-lg-2">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tienda.html">Menú / Tienda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="nosotros.html">Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="historia.html">Historia</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
+                    <li class="nav-item">
+                        <a href="carrito-cliente.html" class="btn-carrito-nav">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Carrito</span>
+                            <span class="badge" id="nav-carrito-contador">0</span>
+                        </a>
+                    </li>
+                    <!-- ESTE ES EL LI PARA EL CLIENTE -->
+                    <li class="nav-item" id="nav-cliente">
+                        <a class="nav-link" href="login-cliente.html">
+                            <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==========================================
+    HERO
+    ========================================== -->
+    <section class="hero">
+        <div class="container text-center">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h1 class="mb-4">
+                        <span class="gota"></span>
+                        Nuestra
+                        <span class="gota"></span>
+                        <br>
+                        <span style="color: #e8c9f0;">Historia</span>
+                        <span style="color: #d4a0e0;"> & </span>
+                        <span style="color: #e8c9f0;">Pasión</span>
+                    </h1>
+                    <p class="mb-0">
+                        Conoce la historia detrás de Envelope Soul Café y lo que nos hace únicos.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+    HISTORIA
+    ========================================== -->
+    <section class="seccion-historia">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h3 class="seccion-titulo">
+                        <i class="fas fa-book-open"></i> Nuestra Historia
+                    </h3>
+                    <div class="texto-historia">
+                        <p>
+                            <strong>Envelope Soul Café</strong> Esta por nacer en 2026 en el corazón de la 
+                            <strong>Colonia Roma</strong>, Ciudad de México, con una visión clara: 
+                            crear un espacio donde el café de especialidad y la creatividad se 
+                            encontraran para dar vida a momentos inolvidables.
+                        </p>
+                        <p>
+                            Fundado por un grupo de apasionados del café, nuestro nombre 
+                            <strong>"Envelope Soul"</strong> representa la idea de que cada taza 
+                            es como un sobre que envuelve el alma de quien la disfruta: un momento 
+                            de pausa, inspiración y conexión.
+                        </p>
+                        <p>
+                            Desde nuestros inicios, nos hemos comprometido a seleccionar los mejores 
+                            granos de origen mexicano, de regiones como <strong>Chiapas, Veracruz y Oaxaca</strong>, 
+                            para ofrecer una experiencia de sabor única y auténtica.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="text-center">
+                        <img src="/img/evidencia.png" alt="Nuestra Historia" class="img-fluid rounded-4 shadow" style="max-height: 400px; object-fit: cover; width: 100%;" onerror="this.style.display='none'">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+    UBICACION
+    ========================================== -->
+    <section class="seccion-ubicacion">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h3 class="seccion-titulo">
+                        <i class="fas fa-map-marker-alt me-2"></i> Estamos Ubicados
+                    </h3>
+                    <div class="texto-historia">
+                        <p>
+                            <strong>Envelope Soul Café</strong>
+                            <strong>Aqui Puedes Encontrarnos en: </strong><br>
+                            Calle Colima, entre Av. Insurgentes Sur y Mérida, 
+                            Colonia Roma Norte, Alcaldía Cuauhtémoc, Ciudad de México.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="text-center">
+                        <img src="/img/mapa.png" alt="Nuestra Historia" class="img-fluid rounded-4 shadow" style="max-height: 400px; object-fit: cover; width: 100%;" onerror="this.style.display='none'">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+    NUESTRO CAFÉ
+    ========================================== -->
+    <section class="seccion-cafe">
+        <div class="container">
+            <h3 class="seccion-titulo">
+                <i class="fas fa-coffee"></i> Nuestro Café
+            </h3>
+            <p class="text-muted mb-4" style="font-size: 1.05rem;">
+                Seleccionamos los mejores granos de origen mexicano para ofrecerte una experiencia única.
+            </p>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card-equipo" style="background: var(--blanco);">
+                        <div class="avatar" style="background: linear-gradient(135deg, #7A1FA1, #670A2B);">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <h6>Origen</h6>
+                        <p class="text-muted small">Granos de Chiapas, Veracruz y Oaxaca</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card-equipo" style="background: var(--blanco);">
+                        <div class="avatar" style="background: linear-gradient(135deg, #670A2B, #7A1FA1);">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <h6>Tostado Artesanal</h6>
+                        <p class="text-muted small">Tostado cuidadoso para resaltar cada nota</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card-equipo" style="background: var(--blanco);">
+                        <div class="avatar" style="background: linear-gradient(135deg, #7A1FA1, #670A2B);">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h6>Pasión</h6>
+                        <p class="text-muted small">Amor por el café en cada preparación</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+    EQUIPO
+    ========================================== -->
+    <section class="seccion-equipo">
+        <div class="container">
+            <h3 class="seccion-titulo">
+                <i class="fas fa-users"></i> Nuestro Equipo
+            </h3>
+            <p class="text-muted mb-4" style="font-size: 1.05rem;">
+                Personas apasionadas que hacen posible la experiencia Envelope Soul.
+            </p>
+            <div class="row g-4">
+                <div class="col-md-3 col-6">
+                    <div class="card-equipo">
+                        <div class="avatar"><i class="fas fa-user-tie"></i></div>
+                        <h6>David Omar</h6>
+                        <span class="rol">Fundador & Barista</span>
+                        <p>Apasionado del café de especialidad desde hace 10 años.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="card-equipo">
+                        <div class="avatar"><i class="fas fa-graduation-cap"></i></div>
+                        <h6>El Tona.</h6>
+                        <span class="rol">Head Barista</span>
+                        <p>Experta en latte art y técnicas de extracción.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="card-equipo">
+                        <div class="avatar"><i class="fas fa-graduation-cap"></i></div>
+                        <h6>Yair .C</h6>
+                        <span class="rol">Catador</span>
+                        <p>Selecciona los mejores granos de origen mexicano.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="card-equipo">
+                        <div class="avatar"><i class="fas fa-user-tie"></i></div>
+                        <h6>El Loxed</h6><br>
+                        <span class="rol">Gerente</span>
+                        <p>Garantiza la mejor experiencia para nuestros clientes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+    FOOTER
+    ========================================== -->
+    <footer class="footer" id="contacto">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5 class="fw-bold">☕ Envelope Soul Café</h5>
+                    <p class="opacity-75">"Un sabor encantador que encenderá tu encanto"</p>
+                    <div class="d-flex gap-3 mt-3">
+                        <a href="https://www.facebook.com/profile.php?id=61588977543188" target="_blank" class="social-icon" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/envelopesoulcafe/" target="_blank" class="social-icon" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.tiktok.com/@envelopesoulcafe" target="_blank" class="social-icon" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" target="_blank" class="social-icon" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-2 mb-4">
+                    <h6 class="fw-bold">Enlaces</h6>
+                    <div><a href="index.html">Inicio</a></div>
+                    <div><a href="tienda.html">Menú / Tienda</a></div>
+                    <div><a href="nosotros.html">Nosotros</a></div>
+                    <div><a href="historia.html">Historia</a></div>
+                    <div><a href="carrito-cliente.html">Carrito</a></div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h6 class="fw-bold">Categorías</h6>
+                    <div><a href="tienda.html#calientes">🥵 Calientes</a></div>
+                    <div><a href="tienda.html#frias">🧊 Frías</a></div>
+                    <div><a href="tienda.html#snacks">🍪 Snacks</a></div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h6 class="fw-bold">Contacto</h6>
+                    <div><i class="fas fa-phone me-2"></i> (55) 1234-5678</div>
+                    <div><i class="fas fa-envelope me-2"></i> info@envelopesoulcafe.com</div>
+                    <div><i class="fas fa-map-marker-alt me-2"></i> Calle Colima, entre Av. Insurgentes Sur y Mérida, Colonia Roma Norte, Alcaldía Cuauhtémoc, Ciudad de México.</div>
+                </div>
+            </div>
+            <hr class="border-light opacity-25">
+            <div class="text-center opacity-75 small">
+                &copy; 2026 Envelope Soul Café. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // ==========================================
+        // ACTUALIZAR CONTADOR DEL CARRITO
+        // ==========================================
+        function actualizarContadorNav() {
+            const carrito = JSON.parse(localStorage.getItem('carrito-cliente')) || [];
+            const total = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+            document.querySelectorAll('#nav-carrito-contador').forEach(el => {
+                if (el) el.textContent = total;
+            });
+        }
+
+        // ==========================================
+        // EFECTO NAVBAR SCROLL
+        // ==========================================
+        document.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar-custom');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // ==========================================
+        // INICIALIZAR
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', function() {
+            actualizarContadorNav();
+
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'carrito-cliente') {
+                    actualizarContadorNav();
+                }
+            });
+        });
+
+
+         // ==========================================
+        // ACTUALIZAR NAVBAR SEGÚN SESIÓN DEL CLIENTE
+        // ==========================================
+        function actualizarNavbarCliente() {
+            const sesion = JSON.parse(localStorage.getItem('cliente_sesion'));
+            const navCliente = document.getElementById('nav-cliente');
+            
+            // Si no existe el elemento, salir
+            if (!navCliente) {
+                console.warn('Elemento #nav-cliente no encontrado');
+                return;
+            }
+
+            if (sesion && sesion.nombre) {
+                // Cliente logueado → Mostrar "Mi Cuenta" con su nombre
+                navCliente.innerHTML = `
+                    <a class="nav-link" href="mi-cuenta.html">
+                        <i class="fas fa-user-circle"></i> ${sesion.nombre}
+                    </a>
+                `;
+            } else {
+                // Cliente NO logueado → Mostrar "Iniciar Sesión"
+                navCliente.innerHTML = `
+                    <a class="nav-link" href="login-cliente.html">
+                        <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                    </a>
+                `;
+            }
+        }
+
+        // ==========================================
+        // EJECUTAR CUANDO EL DOM ESTÉ LISTO
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', function() {
+            actualizarNavbarCliente();
+        });
+
+        // También ejecutar cuando cambie el localStorage (por si se loguea desde otra pestaña)
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'cliente_sesion') {
+                actualizarNavbarCliente();
+            }
+    });
+    </script>
+</body>
+</html>

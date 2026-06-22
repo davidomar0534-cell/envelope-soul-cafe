@@ -1,0 +1,7 @@
+node_modules/
+vendor/
+Base de Datos/
+Librerias/
+isnode/
+.env
+.DS_Store
