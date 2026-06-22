@@ -7,7 +7,7 @@ app.use(express.static(__dirname));
 
 app.use('/img', express.static(__dirname + '/img'));
 
-const uri = "mongodb://localhost:27017";
+const uri = process.env.MONGODB_URI || "mongodb://localhost:27017";
 const client = new MongoClient(uri);
 const DB_NAME = "cafeteria_db";
 const port = process.env.PORT || 8085;
